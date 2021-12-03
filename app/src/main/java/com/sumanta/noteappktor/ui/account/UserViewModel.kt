@@ -19,7 +19,7 @@ import javax.inject.Inject
 class UserViewModel
 @Inject
     constructor(
-        val noteRepo: NoteRepo
+    private val noteRepo: NoteRepo
     ) :ViewModel() {
 
     private val _registerState = MutableSharedFlow<Result<String>>()

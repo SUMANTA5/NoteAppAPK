@@ -11,7 +11,7 @@ import com.sumanta.noteappktor.databinding.FragmentAllNotesBinding
 class AllNoteFragment: Fragment(R.layout.fragment_all_notes) {
 
     private var _binding: FragmentAllNotesBinding? = null
-    val binding: FragmentAllNotesBinding?
+    private val binding: FragmentAllNotesBinding?
         get() = _binding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

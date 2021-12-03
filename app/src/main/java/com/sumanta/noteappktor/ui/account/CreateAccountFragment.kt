@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class CreateAccountFragment: Fragment(R.layout.fragment_create_account) {
 
     private var _binding: FragmentCreateAccountBinding? = null
-    val binding: FragmentCreateAccountBinding?
+    private val binding: FragmentCreateAccountBinding?
     get() = _binding
 
     private val userViewModel: UserViewModel by activityViewModels()

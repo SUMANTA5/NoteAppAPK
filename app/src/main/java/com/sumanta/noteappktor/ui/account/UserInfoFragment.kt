@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
     private var _binding: FragmentUserInfoBinding? = null
-    val binding: FragmentUserInfoBinding?
+    private val binding: FragmentUserInfoBinding?
         get() = _binding
 
     private val userViewModel: UserViewModel by activityViewModels()
