@@ -3,8 +3,11 @@ package com.sumanta.noteappktor.di.module
 import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
+import com.sumanta.noteappktor.data.local.dao.NoteDao
 import com.sumanta.noteappktor.data.local.database.NoteDatabase
 import com.sumanta.noteappktor.data.remote.api.NoteApi
+import com.sumanta.noteappktor.repository.NoteRepo
+import com.sumanta.noteappktor.repository.NoteRepoImpl
 import com.sumanta.noteappktor.uitl.SessionManager
 import com.sumanta.noteappktor.uitl.constants.BASE_URL
 import dagger.Module
@@ -65,5 +68,22 @@ object AppModule {
             .build()
             .create(NoteApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideNoteRepo(
+        noteApi: NoteApi,
+        noteDao: NoteDao,
+        sessionManager: SessionManager
+    ): NoteRepo {
+        return NoteRepoImpl(
+            noteApi, noteDao, sessionManager
+        )
+    }
+
+
+
+
+
 
 }

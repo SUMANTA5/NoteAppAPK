@@ -6,12 +6,13 @@ import android.widget.Toast
 object constants {
 
     const val JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
+    const val NAME_KEY = "NAME_KEY"
+    const val EMAIL_KEY = "EMAIL_KEY"
 
     const val BASE_URL = "https://fierce-waters-90770.herokuapp.com"
     const val API_VERSION = "/v1"
 
-    fun Context.showMsg(msg: String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
-    }
+    const val MINIMUM_PASSWORD_LENGTH = 3
+    const val MAXIMUM_PASSWORD_LENGTH = 8
 
 }
