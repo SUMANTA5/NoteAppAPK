@@ -109,7 +109,6 @@ class UserViewModel
     }
 
     private fun isPasswordValid(password: String): Boolean{
-
         return (password.length in MINIMUM_PASSWORD_LENGTH..MAXIMUM_PASSWORD_LENGTH)
     }
 
