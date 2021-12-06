@@ -22,6 +22,32 @@ constructor(
     private val sessionManager: SessionManager
 ) : NoteRepo {
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun deleteNote(noteId: String) {
+        try {
+            noteDao.deleteNoteLocally(noteId)
+            val token = sessionManager.getJwtToken() ?: kotlin.run {
+                noteDao.deleteNote(noteId)
+                return
+            }
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+
+            val response = noteApi.deleteNote(
+                "Bearer $token",
+                noteId
+            )
+
+            if (response.success){
+                noteDao.deleteNote(noteId)
+            }
+
+
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
 
     override fun getAllNote(): Flow<List<LocalNote>> = noteDao.getAllNotesOrderedByData()
 
