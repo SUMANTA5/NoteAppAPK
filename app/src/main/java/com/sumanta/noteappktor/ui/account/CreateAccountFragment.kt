@@ -18,11 +18,11 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class CreateAccountFragment: Fragment(R.layout.fragment_create_account) {
+class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
     private var _binding: FragmentCreateAccountBinding? = null
     private val binding: FragmentCreateAccountBinding?
-    get() = _binding
+        get() = _binding
 
     private val userViewModel: UserViewModel by activityViewModels()
 
@@ -47,23 +47,27 @@ class CreateAccountFragment: Fragment(R.layout.fragment_create_account) {
         }
     }
 
-    private fun subscribeToRegisterEvent() = lifecycleScope.launch{
-        userViewModel.registerState.collect(){ result->
-            when(result){
-                is Result.Success->{
+    private fun subscribeToRegisterEvent() = lifecycleScope.launch {
+        userViewModel.registerState.collect() { result ->
+            when (result) {
+                is Result.Success -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),"Successfully Created User!",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), "Successfully Created User!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     findNavController().popBackStack()
 
                 }
-                is Result.Error->{
+                is Result.Error -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),result.errorMessage,
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), result.errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
-                is Result.Loading->{
+                is Result.Loading -> {
                     showProgressBar()
 
                 }
@@ -71,11 +75,11 @@ class CreateAccountFragment: Fragment(R.layout.fragment_create_account) {
         }
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding?.createUserProgressBar?.isVisible = true
     }
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         binding?.createUserProgressBar?.isVisible = false
     }
 

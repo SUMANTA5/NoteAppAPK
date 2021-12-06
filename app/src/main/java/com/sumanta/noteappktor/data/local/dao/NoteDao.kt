@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNote(note:LocalNote)
+    suspend fun insertNote(note: LocalNote)
 
     @Query("SELECT * FROM LocalNote WHERE locallyDeleted =0 ORDER BY date DESC")
-    fun getAllNotesOrderedByData():Flow<List<LocalNote>>
+    fun getAllNotesOrderedByData(): Flow<List<LocalNote>>
 
     @Query("DELETE FROM LocalNote WHERE noteId=:noteId")
     suspend fun deleteNote(noteId: String)

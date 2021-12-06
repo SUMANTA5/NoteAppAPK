@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.sumanta.noteappktor.R
 import com.sumanta.noteappktor.databinding.FragmentAllNotesBinding
 
-class AllNoteFragment: Fragment(R.layout.fragment_all_notes) {
+class AllNoteFragment : Fragment(R.layout.fragment_all_notes) {
 
     private var _binding: FragmentAllNotesBinding? = null
     private val binding: FragmentAllNotesBinding?
@@ -36,14 +36,14 @@ class AllNoteFragment: Fragment(R.layout.fragment_all_notes) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu,menu)
+        inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
-            R.id.account ->{
+        when (item.itemId) {
+            R.id.account -> {
                 findNavController().navigate(R.id.action_allNoteFragment_to_userInfoFragment)
             }
         }

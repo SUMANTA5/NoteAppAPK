@@ -15,16 +15,16 @@ import javax.inject.Inject
 
 class NoteRepoImpl
 @Inject
-    constructor(
+constructor(
     private val noteApi: NoteApi,
     val noteDao: NoteDao,
     private val sessionManager: SessionManager
-    ) : NoteRepo {
+) : NoteRepo {
     override suspend fun createNote(note: LocalNote): Result<String> {
         return try {
-           noteDao.insertNote(note)
+            noteDao.insertNote(note)
             val token = sessionManager.getJwtToken()
-            if (token == null){
+            if (token == null) {
                 Result.Success("Note Is Saved In Local Database")
             }
             val result = noteApi.createNote(
@@ -37,51 +37,51 @@ class NoteRepoImpl
                 )
             )
 
-            if (result.success){
+            if (result.success) {
                 noteDao.insertNote(note.also {
                     it.connected = true
                 })
                 Result.Success("Note Saved Successfully")
-            }else{
+            } else {
                 Result.Error(result.message)
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-            Result.Error(e.message?:"Some Problem")
+            Result.Error(e.message ?: "Some Problem")
         }
     }
 
     override suspend fun updateNote(note: LocalNote): Result<String> {
-         return try {
+        return try {
             noteDao.insertNote(note)
-             val token = sessionManager.getJwtToken()
-             if (token == null){
-                 Result.Success("Note Is Updated In Local Database")
-             }
-             val result = noteApi.updateNote(
-                 "Bearer $token",
-                 RemoteNote(
-                     noteTitle = note.noteTitle,
-                     description = note.description,
-                     date = note.date,
-                     id = note.noteId
-                 )
-             )
+            val token = sessionManager.getJwtToken()
+            if (token == null) {
+                Result.Success("Note Is Updated In Local Database")
+            }
+            val result = noteApi.updateNote(
+                "Bearer $token",
+                RemoteNote(
+                    noteTitle = note.noteTitle,
+                    description = note.description,
+                    date = note.date,
+                    id = note.noteId
+                )
+            )
 
-             if (result.success){
-                 noteDao.insertNote(note.also {
-                     it.connected = true
-                 })
-                 Result.Success("Note Updated Successfully")
-             }else{
-                 Result.Error(result.message)
-             }
+            if (result.success) {
+                noteDao.insertNote(note.also {
+                    it.connected = true
+                })
+                Result.Success("Note Updated Successfully")
+            } else {
+                Result.Error(result.message)
+            }
 
-         }catch (e:Exception){
-             e.printStackTrace()
-             Result.Error(e.message?:"Some Problem")
-         }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Some Problem")
+        }
     }
 
     //================ user =================//
@@ -90,18 +90,18 @@ class NoteRepoImpl
     override suspend fun createUser(user: User): Result<String> {
 
         return try {
-            if (!isNetworkConnected(sessionManager.context)){
+            if (!isNetworkConnected(sessionManager.context)) {
                 Result.Error<String>("No Internet Connection!")
             }
             val result = noteApi.createAccount(user)
-            if (result.success){
-                sessionManager.updateSession(result.message,user.name ?:"",user.email)
+            if (result.success) {
+                sessionManager.updateSession(result.message, user.name ?: "", user.email)
                 Result.Success("User Created Successfully")
-            }else{
+            } else {
                 Result.Error<String>(result.message)
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Some Problem Occurred!")
         }
@@ -111,18 +111,18 @@ class NoteRepoImpl
     @RequiresApi(Build.VERSION_CODES.M)
     override suspend fun login(user: User): Result<String> {
         return try {
-            if (!isNetworkConnected(sessionManager.context)){
+            if (!isNetworkConnected(sessionManager.context)) {
                 Result.Error<String>("No Internet Connection!")
             }
             val result = noteApi.login(user)
-            if (result.success){
-                sessionManager.updateSession(result.message,user.name ?:"",user.email)
+            if (result.success) {
+                sessionManager.updateSession(result.message, user.name ?: "", user.email)
                 Result.Success("Logged In Successfully")
-            }else{
+            } else {
                 Result.Error<String>(result.message)
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Some Problem Occurred!")
         }
@@ -136,7 +136,7 @@ class NoteRepoImpl
                 Result.Error<String>("User not Logged In!")
             }
             Result.Success(User(name, email!!, ""))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Some Problem Occurred!")
         }
@@ -146,7 +146,7 @@ class NoteRepoImpl
         return try {
             sessionManager.logout()
             Result.Success("Logged Out Successfully")
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Some Problem Occurred!")
         }

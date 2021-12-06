@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
+class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     private var _binding: FragmentUserInfoBinding? = null
     private val binding: FragmentUserInfoBinding?
         get() = _binding
@@ -44,20 +44,20 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
         userViewModel.getCurrentUser()
     }
 
-    private fun subscribeToCurrentEvent() = lifecycleScope.launch{
-        userViewModel.currentUserState.collect { result->
-            when(result){
-                is Result.Success->{
+    private fun subscribeToCurrentEvent() = lifecycleScope.launch {
+        userViewModel.currentUserState.collect { result ->
+            when (result) {
+                is Result.Success -> {
                     userLogin()
                     binding?.userTxt?.text = result.data?.name ?: "No Name"
                     binding?.userEmail?.text = result.data?.email ?: "No Email"
                 }
-                is Result.Error->{
+                is Result.Error -> {
                     userNotLogin()
                     binding?.userTxt?.text = "Not Login"
 
                 }
-                is Result.Loading->{
+                is Result.Loading -> {
                     binding?.userProgressBar?.isVisible = true
                 }
             }
@@ -67,7 +67,7 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
     }
 
 
-    private fun userLogin(){
+    private fun userLogin() {
         binding?.userProgressBar?.isVisible = false
         binding?.loginBtn?.isVisible = false
         binding?.createAccountBtn?.isVisible = false
@@ -75,7 +75,7 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
         binding?.userEmail?.isVisible = true
     }
 
-    private fun userNotLogin(){
+    private fun userNotLogin() {
         binding?.userProgressBar?.isVisible = false
         binding?.loginBtn?.isVisible = true
         binding?.createAccountBtn?.isVisible = true

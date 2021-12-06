@@ -15,42 +15,43 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel
 @Inject
-    constructor(
+constructor(
     private val noteRepo: NoteRepo
-    ):ViewModel() {
+) : ViewModel() {
 
-    var oldNote : LocalNote? = null
+    var oldNote: LocalNote? = null
 
-        fun createNote(
-            noteTitle:String?,
-            description:String?
-        )= viewModelScope.launch(Dispatchers.IO){
-            val localNote = LocalNote(
-                noteTitle = noteTitle,
-                description = description
-            )
-            noteRepo.createNote(localNote)
-        }
+    fun createNote(
+        noteTitle: String?,
+        description: String?
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        val localNote = LocalNote(
+            noteTitle = noteTitle,
+            description = description
+        )
+        noteRepo.createNote(localNote)
+    }
 
 
     fun updateNote(
-        noteTitle:String?,
-        description:String?
-    )= viewModelScope.launch(Dispatchers.IO){
+        noteTitle: String?,
+        description: String?
+    ) = viewModelScope.launch(Dispatchers.IO) {
         if (noteTitle == oldNote?.noteTitle &&
             description == oldNote?.description &&
-            oldNote?.connected == true){
+            oldNote?.connected == true
+        ) {
             return@launch
         }
         val note = LocalNote(
             noteTitle = noteTitle,
             description = description,
-            noteId =  oldNote!!.noteId
+            noteId = oldNote!!.noteId
         )
         noteRepo.updateNote(note)
     }
 
-    fun milliToDate(time:Long):String {
+    fun milliToDate(time: Long): String {
         val date = Date(time)
         val simpleDateFormat = SimpleDateFormat("hh:mm a | MMM d, yyyy", Locale.getDefault())
         return simpleDateFormat.format(date)

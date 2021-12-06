@@ -4,5 +4,5 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class NoteAppApplication :Application(){
+class NoteAppApplication : Application() {
 }

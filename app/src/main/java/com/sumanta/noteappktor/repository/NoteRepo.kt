@@ -6,18 +6,17 @@ import com.sumanta.noteappktor.uitl.Result
 
 interface NoteRepo {
 
-    suspend fun createUser(user: User):Result<String>
-    suspend fun login(user: User):Result<String>
-    suspend fun gatUser():Result<User>
-    suspend fun logout():Result<String>
+    suspend fun createUser(user: User): Result<String>
+    suspend fun login(user: User): Result<String>
+    suspend fun gatUser(): Result<User>
+    suspend fun logout(): Result<String>
 
 
     //================ note =================//
 
 
-
     suspend fun createNote(note: LocalNote): Result<String>
-    suspend fun updateNote(note: LocalNote):Result<String>
+    suspend fun updateNote(note: LocalNote): Result<String>
 
 
 }

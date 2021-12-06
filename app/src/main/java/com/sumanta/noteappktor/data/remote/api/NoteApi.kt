@@ -22,11 +22,7 @@ interface NoteApi {
     ): SimpleResponse
 
 
-
-
     // =============== NOTES ================//
-
-
 
 
     @Headers("Content-Type: application/json")

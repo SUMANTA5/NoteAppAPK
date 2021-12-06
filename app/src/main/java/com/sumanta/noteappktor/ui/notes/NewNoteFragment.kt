@@ -12,14 +12,14 @@ import com.sumanta.noteappktor.databinding.FragmentNewNoteBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewNoteFragment: Fragment(R.layout.fragment_new_note) {
+class NewNoteFragment : Fragment(R.layout.fragment_new_note) {
 
     private var _binding: FragmentNewNoteBinding? = null
     private val binding: FragmentNewNoteBinding?
         get() = _binding
 
     private val noteViewModel: NoteViewModel by activityViewModels()
-    private val args : NewNoteFragmentArgs by navArgs()
+    private val args: NewNoteFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,36 +45,38 @@ class NewNoteFragment: Fragment(R.layout.fragment_new_note) {
 
     override fun onPause() {
         super.onPause()
-        if (noteViewModel.oldNote == null){
+        if (noteViewModel.oldNote == null) {
             createNote()
-        }else{
+        } else {
             updateNote()
         }
     }
 
-    private fun createNote(){
+    private fun createNote() {
         val noteTitle = binding?.newNoteTitleEditText?.text.toString()?.trim()
         val description = binding?.newNoteDescriptionEditText?.text.toString()?.trim()
 
-        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty()){
-            Toast.makeText(requireContext(),"Not is Empty",
-                Toast.LENGTH_SHORT).show()
+        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty()) {
+            Toast.makeText(
+                requireContext(), "Not is Empty",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
-        noteViewModel.createNote(noteTitle,description)
+        noteViewModel.createNote(noteTitle, description)
     }
 
-    private fun updateNote(){
+    private fun updateNote() {
         val noteTitle = binding?.newNoteTitleEditText?.text.toString()?.trim()
         val description = binding?.newNoteDescriptionEditText?.text.toString()?.trim()
 
-        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty()){
-             //todo: delete note
+        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty()) {
+            //todo: delete note
             return
         }
 
-        noteViewModel.updateNote(noteTitle,description)
+        noteViewModel.updateNote(noteTitle, description)
     }
 
 

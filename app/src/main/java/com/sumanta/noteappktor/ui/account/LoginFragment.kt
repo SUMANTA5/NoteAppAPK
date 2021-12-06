@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment: Fragment(R.layout.fragment_login) {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding?
         get() = _binding
 
-    private val userViewModel: UserViewModel by  activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,23 +44,27 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun subscribeToLoginEvent() = lifecycleScope.launch{
-        userViewModel.loginState.collect(){ result->
-            when(result){
-                is Result.Success->{
+    private fun subscribeToLoginEvent() = lifecycleScope.launch {
+        userViewModel.loginState.collect() { result ->
+            when (result) {
+                is Result.Success -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),"Successfully Created User!",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), "Successfully Created User!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     findNavController().popBackStack()
 
                 }
-                is Result.Error->{
+                is Result.Error -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),result.errorMessage,
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), result.errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
-                is Result.Loading->{
+                is Result.Loading -> {
                     showProgressBar()
 
                 }
@@ -68,11 +72,11 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding?.loginProgressBar?.isVisible = true
     }
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         binding?.loginProgressBar?.isVisible = false
     }
 

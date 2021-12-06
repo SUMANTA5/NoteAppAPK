@@ -18,9 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel
 @Inject
-    constructor(
+constructor(
     private val noteRepo: NoteRepo
-    ) :ViewModel() {
+) : ViewModel() {
 
     private val _registerState = MutableSharedFlow<Result<String>>()
     val registerState: SharedFlow<Result<String>> = _registerState
@@ -32,7 +32,6 @@ class UserViewModel
     val currentUserState: MutableSharedFlow<Result<User>> = _currentUserState
 
 
-
     fun createUser(
         name: String,
         email: String,
@@ -41,15 +40,15 @@ class UserViewModel
     ) = viewModelScope.launch {
         _registerState.emit(Result.Loading())
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || password != confirmPassword){
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || password != confirmPassword) {
             _registerState.emit(Result.Error("Some Fields are Empty"))
             return@launch
         }
-        if (!isEmailValid(email)){
+        if (!isEmailValid(email)) {
             _registerState.emit(Result.Error("Email Is Not Valid!"))
             return@launch
         }
-        if (!isPasswordValid(password)){
+        if (!isPasswordValid(password)) {
             _registerState.emit(Result.Error("Password Should be Between $MINIMUM_PASSWORD_LENGTH And $MAXIMUM_PASSWORD_LENGTH"))
             return@launch
         }
@@ -69,15 +68,15 @@ class UserViewModel
     ) = viewModelScope.launch {
         _loginState.emit(Result.Loading())
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()){
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             _loginState.emit(Result.Error("Some Fields are Empty"))
             return@launch
         }
-        if (!isEmailValid(email)){
+        if (!isEmailValid(email)) {
             _loginState.emit(Result.Error("Email Is Not Valid!"))
             return@launch
         }
-        if (!isPasswordValid(password)){
+        if (!isPasswordValid(password)) {
             _loginState.emit(Result.Error("Password Should be Between $MINIMUM_PASSWORD_LENGTH And $MAXIMUM_PASSWORD_LENGTH"))
             return@launch
         }
@@ -96,19 +95,20 @@ class UserViewModel
 
     fun logout() = viewModelScope.launch {
         val result = noteRepo.logout()
-        if (result is Result.Success){
+        if (result is Result.Success) {
             getCurrentUser()
         }
     }
 
 
-    private fun isEmailValid(email: String): Boolean{
-        var regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+    private fun isEmailValid(email: String): Boolean {
+        var regex =
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
         val pattern = Pattern.compile(regex)
         return (email.isNotEmpty() && pattern.matcher(email).matches())
     }
 
-    private fun isPasswordValid(password: String): Boolean{
+    private fun isPasswordValid(password: String): Boolean {
         return (password.length in MINIMUM_PASSWORD_LENGTH..MAXIMUM_PASSWORD_LENGTH)
     }
 

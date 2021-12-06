@@ -16,4 +16,4 @@ data class LocalNote(
     var date: Long = System.currentTimeMillis(),
     var connected: Boolean = false,
     var locallyDeleted: Boolean = false,
-): Serializable
+) : Serializable
