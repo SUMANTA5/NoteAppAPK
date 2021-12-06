@@ -23,6 +23,34 @@ constructor(
 ) : NoteRepo {
 
     @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun syncNotes() {
+        try {
+            sessionManager.getJwtToken() ?: return
+            if (!isNetworkConnected(sessionManager.context)) {
+                return
+            }
+
+            val locallyDeletedNotes = noteDao.getAllLocallyDeletedNotes()
+            locallyDeletedNotes.forEach {
+                deleteNote(it.noteId)
+            }
+
+            val notConnectedNotes = noteDao.getAllLocalNotes()
+            notConnectedNotes.forEach {
+                createNote(it)
+            }
+
+            val notUpdatedNotes = noteDao.getAllLocalNotes()
+            notUpdatedNotes.forEach {
+                updateNote(it)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override suspend fun deleteNote(noteId: String) {
         try {
             noteDao.deleteNoteLocally(noteId)
@@ -39,12 +67,12 @@ constructor(
                 noteId
             )
 
-            if (response.success){
+            if (response.success) {
                 noteDao.deleteNote(noteId)
             }
 
 
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -72,7 +100,7 @@ constructor(
                     )
                 )
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -83,7 +111,7 @@ constructor(
             noteDao.insertNote(note)
             val token = sessionManager.getJwtToken()
                 ?: return Result.Success("Note Is Saved In Local Database")
-            if (!isNetworkConnected(sessionManager.context)){
+            if (!isNetworkConnected(sessionManager.context)) {
                 return Result.Error("No Internet Connection!")
             }
             val result = noteApi.createNote(
@@ -96,7 +124,7 @@ constructor(
                 )
             )
 
-           return if (result.success) {
+            return if (result.success) {
                 noteDao.insertNote(note.also {
                     it.connected = true
                 })
@@ -107,7 +135,7 @@ constructor(
 
         } catch (e: Exception) {
             e.printStackTrace()
-           return Result.Error(e.message ?: "Some Problem")
+            return Result.Error(e.message ?: "Some Problem")
         }
     }
 
@@ -118,7 +146,7 @@ constructor(
             val token = sessionManager.getJwtToken()
                 ?: return Result.Success("Note Is Updated In Local Database")
 
-            if (!isNetworkConnected(sessionManager.context)){
+            if (!isNetworkConnected(sessionManager.context)) {
                 return Result.Error("No Internet Connection!")
             }
             val result = noteApi.updateNote(

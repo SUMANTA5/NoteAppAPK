@@ -1,4 +1,4 @@
-package com.sumanta.noteappktor.ui
+package com.sumanta.noteappktor.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

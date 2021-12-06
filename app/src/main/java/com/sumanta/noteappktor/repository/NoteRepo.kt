@@ -20,8 +20,8 @@ interface NoteRepo {
     suspend fun updateNote(note: LocalNote): Result<String>
     fun getAllNote(): Flow<List<LocalNote>>
     suspend fun gatAllNoteFromServer()
-
     suspend fun deleteNote(noteId: String)
 
+    suspend fun syncNotes()
 
 }

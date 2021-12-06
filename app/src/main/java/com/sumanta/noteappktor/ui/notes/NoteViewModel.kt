@@ -21,6 +21,16 @@ constructor(
 
     val notes = noteRepo.getAllNote()
     var oldNote: LocalNote? = null
+    var searchQuery: String = ""
+
+    fun syncNotes(
+        onDone: (() -> Unit)? = null
+    ) = viewModelScope.launch {
+        noteRepo.syncNotes()
+        onDone?.invoke()
+
+    }
+
 
     fun createNote(
         noteTitle: String?,
@@ -40,7 +50,7 @@ constructor(
     }
 
     fun undoDelete(
-        note:LocalNote
+        note: LocalNote
     ) = viewModelScope.launch {
         noteRepo.createNote(note)
     }
