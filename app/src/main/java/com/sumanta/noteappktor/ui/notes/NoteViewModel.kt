@@ -19,6 +19,7 @@ constructor(
     private val noteRepo: NoteRepo
 ) : ViewModel() {
 
+    val notes = noteRepo.getAllNote()
     var oldNote: LocalNote? = null
 
     fun createNote(
